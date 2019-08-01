@@ -1,0 +1,24 @@
+# random crap
+.vscode
+__pycache__
+.__pycache__
+*.pyc 
+
+# dataset
+hpatches-sequences-release
+hpatches-minimal
+
+# DL Models
+models
+
+# results
+results/orb
+results/sift
+results/sfop
+results/superpoint
+results/d2net
+results/lift
+
+# a lot of experimentation
+results/experiments/*.txt
+results/experiments/*.png
