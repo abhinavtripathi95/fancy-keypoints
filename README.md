@@ -9,7 +9,7 @@ of descriptors is qualitatively assessed using the reprojection error of the nea
 neighbor matches.
 
 For more details, please see
-* Full Report: [On Evaluation of Interest Point Detectors and Descriptors](https://gitlab.ipb.uni-bonn.de/amilioto/fancy-keypoints/raw/master/report.pdf?inline=false)
+* Full Report: [On Evaluation of Interest Point Detectors and Descriptors](https://github.com/abhinavtripathi95/fancy-keypoints/raw/master/report.pdf)
 
 # What does this script do?
 This script evaluates interest features on the full sequences of [HPatches Dataset](https://github.com/hpatches/hpatches-dataset). The following features are supported as of now:
