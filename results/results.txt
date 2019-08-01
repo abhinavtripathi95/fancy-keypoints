@@ -1,0 +1,551 @@
+DESCRIPTOR DIMENSIONS [check with theory]
+--------------------
+
+1. ORB          32      int
+2. SIFT         128     float
+3. SUPERPOINT   256     float
+4. D2NET        512     float
+5. lift         128		float
+
+PROBLEMS TO ADDRESS
+
+-------------------
+0. WTF: check for float32 and float differences while saving and loading
+1. SFOP does not work for:
+    (a) i_castle/1.ppm      [and maybe others in this sequence]
+    (b) i_nijmegen/2.ppm    [and maybe others in this sequence]
+    (c) i_village/2.ppm     - failed to recognize the format of the image
+    (d) Sequence In Progress: [[107] out of 113] i_brooklyn ...
+____[[107]/113]Image in progress:  i_brooklyn 1.ppm
+sfop
+sh: 1: gm: not found
+terminate called after throwing an instance of 'cimg_library::CImgIOException'
+  what():  [instance(0,0,0,0,(nil),non-shared)] CImg<float>::load() : Failed to recognize format of file 'hpatches-sequences-release/i_brooklyn/1.ppm'.
+Aborted (core dumped)
+
+2. LIFT has a shitty extraction pipeline. Simplify on Monday.
+3. ORB Descriptor evaluation:
+____[[2]/116]Image pair in progress:  v_home H_1_5
+None
+Traceback (most recent call last):
+  File "evaluate_descr.py", line 156, in <module>
+    h_error = homography_error(H, H_est, qry_img_shape)
+  File "evaluate_descr.py", line 65, in homography_error
+    c1_est = np.dot(H_est, c1)
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
+4. SUPERPOINT Descriptor Evaluation:
+Sequence In Progress: [[3] out of 116] ... v_birdwoman
+____[[3]/116]Image pair in progress:  v_birdwoman H_1_2
+OpenCV Error: Assertion failed (count >= 0 && count2 == count) in run, file /home/travis/miniconda/conda-bld/conda_1486587069159/work/opencv-3.1.0/modules/calib3d/src/ptsetreg.cpp, line 180
+Traceback (most recent call last):
+  File "evaluate_descr.py", line 151, in <module>
+    H_est = estimate_homography(kp_qry, descr_qry, kp_trg, descr_trg)
+  File "evaluate_descr.py", line 47, in estimate_homography
+    M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+cv2.error: /home/travis/miniconda/conda-bld/conda_1486587069159/work/opencv-3.1.0/modules/calib3d/src/ptsetreg.cpp:180: error: (-215) count >= 0 && count2 == count in function run
+5. SIFT Descriptor evaluation
+____[[7]/116]Image pair in progress:  i_nuts H_1_6
+None
+Traceback (most recent call last):
+  File "evaluate_descr.py", line 156, in <module>
+    h_error = homography_error(H, H_est, qry_img_shape)
+  File "evaluate_descr.py", line 65, in homography_error
+    c1_est = np.dot(H_est, c1)
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
+6. ____[[47]/116]Image in progress:  v_astronautis 2.ppm
+d2net
+Traceback (most recent call last):
+  File "extract_features.py", line 175, in <module>
+    extract_kp(options.features, options.input_dir, sequence, img_name)
+  File "extract_features.py", line 63, in extract_kp
+    keypoints, descr = get_d2net_features(img, max_edge, max_sum_edges, preprocessing, multiscale, model)
+  File "/home/abhinav/Downloads/intern-work/feature-extractor/fancy-keypoints/d2net/d2net_extract.py", line 61, in get_d2net_features
+    scales=[1]
+  File "/home/abhinav/Downloads/intern-work/feature-extractor/fancy-keypoints/d2net/lib/pyramid.py", line 52, in process_multiscale
+    fmap_pos = torch.nonzero(detections[0]).t().cpu()
+RuntimeError: CUDA out of memory. Tried to allocate 1.37 GiB (GPU 0; 3.95 GiB total capacity; 343.49 MiB already allocated; 863.94 MiB free; 2.12 GiB cached)
+(pytorch) 
+
+
+
+******************************************************************************
+******************************************************************************
+
+=================  ORB  =================== [TIME FOR EXTRACTION: 0.8007]
+
+Namespace(detector='orb', distance='euclidean', threshold=1.0)
+    
+    OVERALL COVERAGE RESULTS
+    ========================
+    No of images        696
+    No of keypoints     498.992816091954
+    Coverage            0.11219413475715989
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of images        354
+        No of keypoints     499.6638418079096
+        Coverage            0.10837142507777729
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of images        342
+        No of keypoints     498.29824561403507
+        Coverage            0.11615097460073137
+
+==============================================================================
+    
+    OVERALL KEYPOINT MATCHING RESULTS
+    =================================
+    Image Pairs                 580
+    Unique Match Ratio          0.07942017733868406
+    Spurious KP Ratio Qry       nan                         | final: 0.6850699103545406
+    Spurious KP Ratio Trg       nan                         | final: 0.6839928746869406
+    Multiple Match Ratio        0.23475873675120604
+    Repeatability               0.3112271607063818          | final: 0.30312752965956763
+    ...
+    
+        Sequences with Viewpoint Changes
+        -------------------------------
+        Image Pairs                 295
+        Unique Match Ratio          0.07099560472822623
+        Spurious KP Ratio Qry       nan                     | final: 0.6880181819275375
+        Spurious KP Ratio Trg       nan                     | final: 0.685009157185545
+        Multiple Match Ratio        0.2281709183193333
+        Repeatability               0.3028583066792133      | final: 0.2867361635071211
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        Image Pairs                 285
+        Unique Match Ratio          0.08814034898810533
+        Spurious KP Ratio Qry       0.6796144365847558      | --same
+        Spurious KP Ratio Trg       0.680540958154396       | --same
+        Multiple Match Ratio        0.24157770670700415
+        Repeatability               0.3198896587345035      | final: 0.3200940314664861
+
+###############################################################################  
+Descriptor:  orb
+
+    
+    OVERALL HOMOGRAPHY ESTIMATION RESULTS
+    =====================================
+    No of image pairs           580
+    Out of which failures       140
+    Average homography error    817.5339578896469
+    ...
+    
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of image pairs           295
+        Out of which failures       61
+        Average homography error    803.5423591168719
+    
+ 
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of image pairs           285
+        Out of which failures       79
+        Average homography error    833.4273273694009
+
+
+
+
+
+******************************************************************************
+******************************************************************************
+
+=================  SIFT  =================== [TIME FOR EXTRACTION: 7.0936]
+Namespace(detector='sift', distance='euclidean', threshold=1.0)
+
+    OVERALL COVERAGE RESULTS
+    ========================
+    No of images        696
+    No of keypoints     4664.982758620689
+    Coverage            0.26145836008446915
+    ...    
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of images        354
+        No of keypoints     5786.0197740113
+        Coverage            0.268098879612462
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of images        342
+        No of keypoints     3504.6111111111113
+        Coverage            0.2545848398712836
+
+==============================================================================
+
+    OVERALL KEYPOINT MATCHING RESULTS
+    =================================
+    Image Pairs                 580
+    Unique Match Ratio          0.16346447373086692
+    Spurious KP Ratio Qry       0.7587070070587159
+    Spurious KP Ratio Trg       0.7085484173917521
+    Multiple Match Ratio        0.10278817921065937
+    Repeatability               0.25015291946080087         | final: 0.24202098686796616
+    ...
+     
+        Sequences with Viewpoint Changes
+        -------------------------------
+        Image Pairs                 295
+        Unique Match Ratio          0.17282858762504208
+        Spurious KP Ratio Qry       0.7771398477798578
+        Spurious KP Ratio Trg       0.6801330063835495
+        Multiple Match Ratio        0.10213192940829248
+        Repeatability               0.24885569252363285     | final: 0.23284182792334432
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        Image Pairs                 285
+        Unique Match Ratio          0.15377179443689612
+        Spurious KP Ratio Qry       0.7396273999964813
+        Spurious KP Ratio Trg       0.7379608603651547
+        Multiple Match Ratio        0.10346745532188124
+        Repeatability               0.2514956631326063      | final: 0.25152222156503096
+
+
+###########################################################################  
+Descriptor:  SIFT
+Namespace(features='sift')
+Descriptor:  sift
+
+    
+    OVERALL HOMOGRAPHY ESTIMATION RESULTS
+    =====================================
+    No of image pairs           580
+    Out of which failures       2
+    Average homography error    167.90997571558887
+    ...
+    
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of image pairs           295
+        Out of which failures       0
+        Average homography error    231.3562047703194
+    
+ 
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of image pairs           285
+        Out of which failures       2
+        Average homography error    101.77344719564007
+
+
+
+
+
+******************************************************************************
+******************************************************************************
+
+=================  SFOP  =================== [TIME FOR EXTRACTION: 130.1967(kp only)]
+Namespace(distance='euclidean', features='sfop', threshold=1.0)
+
+    
+    OVERALL COVERAGE RESULTS
+    ========================
+    No of images        696
+    No of keypoints     1901.4252873563219
+    Coverage            0.28584678831954885
+    ...
+    
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of images        354
+        No of keypoints     2163.6666666666665
+        Coverage            0.28858721058181935
+    
+ 
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of images        342
+        No of keypoints     1629.982456140351
+        Coverage            0.2830102108901812
+
+    
+==============================================================================
+
+    
+    OVERALL KEYPOINT MATCHING RESULTS
+    =================================
+    Image Pairs                 580
+    Unique Match Ratio          0.18525700054286653
+    Spurious KP Ratio Qry       0.8529293014610477
+    Spurious KP Ratio Trg       0.8173406252286158
+    Multiple Match Ratio        0.0026361056305269394
+    Repeatability               0.15631909727810672         | final: 0.15037035890028366
+    ...
+    
+        Sequences with Viewpoint Changes
+        -------------------------------
+        Image Pairs                 295
+        Unique Match Ratio          0.20796812322042177
+        Spurious KP Ratio Qry       0.8578512865965342
+        Spurious KP Ratio Trg       0.7915227400526239
+        Multiple Match Ratio        0.003248575936560264
+        Repeatability               0.16030841897176606     | final: 0.14860661435698205
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        Image Pairs                 285
+        Unique Match Ratio          0.16174899636785325
+        Spurious KP Ratio Qry       0.8478346150927373
+        Spurious KP Ratio Trg       0.8440644011125372
+        Multiple Match Ratio        0.002002145138317007
+        Repeatability               0.15218979938466984     | final: 0.15219598921703448
+
+
+
+
+*******************************************************************************************
+*******************************************************************************************
+
+================ LIFT ============================
+
+Namespace(distance='euclidean', features='lift', threshold=1.0)
+
+    OVERALL COVERAGE RESULTS
+    ========================
+    No of images        696
+    No of keypoints     933.0632183908046
+    Coverage            0.24627436572009814
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of images        354
+        No of keypoints     940.5310734463277
+        Coverage            0.24098981602964345
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of images        342
+        No of keypoints     925.3333333333334
+        Coverage            0.2517443382067092
+
+==============================================================================
+    
+    OVERALL KEYPOINT MATCHING RESULTS
+    =================================
+    Image Pairs                 580
+    Unique Match Ratio          0.21224388067777447
+    Spurious KP Ratio Qry       0.7965748798233613
+    Spurious KP Ratio Trg       0.7858759726631109
+    Multiple Match Ratio        0.0035937720002104673
+    Repeatability               0.20662177622405423         | final: 0.19944779800256293
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        Image Pairs                 295
+        Unique Match Ratio          0.1940807344824109
+        Spurious KP Ratio Qry       0.8263069505193398
+        Spurious KP Ratio Trg       0.8052925848213446
+        Multiple Match Ratio        0.00403543453418895
+        Repeatability               0.179981699921292       | final: 0.1657868010882908
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        Image Pairs                 285
+        Unique Match Ratio          0.23104433024841395
+        Spurious KP Ratio Qry       0.7657995785766466
+        Spurious KP Ratio Trg       0.7657780758677464
+        Multiple Match Ratio        0.003136612535215196
+        Repeatability               0.23419659204621165     | final: 0.23428988252786212
+
+##############################################################################
+LIFT DESCRIPTOR:
+Namespace(features='lift')
+Descriptor:  lift
+
+    
+    OVERALL HOMOGRAPHY ESTIMATION RESULTS
+    =====================================
+    No of image pairs           580
+    Out of which failures       20
+    Average homography error    139.45488423890998
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of image pairs           295
+        Out of which failures       14
+        Average homography error    228.8117309482276
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of image pairs           285
+        Out of which failures       6
+        Average homography error    49.457486657124164
+
+
+
+
+
+******************************************************************************
+******************************************************************************
+
+=================  SUPERPOINT  =================== [TIME FOR EXTRACTION: 23.4403]
+
+Namespace(detector='superpoint', distance='euclidean', threshold=1.0)
+
+    OVERALL COVERAGE RESULTS
+    ========================
+    No of images        696
+    No of keypoints     1758.9295977011495
+    Coverage            0.29016225398698436
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of images        354
+        No of keypoints     2012.316384180791
+        Coverage            0.28973214851085327
+     
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of images        342
+        No of keypoints     1496.6520467836258
+        Coverage            0.29060745088333056
+
+==============================================================================
+    
+    OVERALL KEYPOINT MATCHING RESULTS
+    =================================
+    Image Pairs                 580
+    Unique Match Ratio          0.31787445785152757
+    Spurious KP Ratio Qry       0.7309970776912569
+    Spurious KP Ratio Trg       0.6962501002599647
+    Multiple Match Ratio        7.04060178919675e-05
+    Repeatability               0.2776546898418313          | final: 0.2655661030230643
+    ...
+    
+        Sequences with Viewpoint Changes
+        -------------------------------
+        Image Pairs                 295
+        Unique Match Ratio          0.29229076681214905
+        Spurious KP Ratio Qry       0.7905577457821986
+        Spurious KP Ratio Trg       0.7175153642560018
+        Multiple Match Ratio        0.00013842539110963103
+        Repeatability               0.23062170386175174     | final: 0.20685066392565124
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        Image Pairs                 285
+        Unique Match Ratio          0.3443558222607088
+        Spurious KP Ratio Qry       0.6693465615971244
+        Spurious KP Ratio Trg       0.6742386866500315
+        Multiple Match Ratio        0.0
+        Repeatability               0.3263379560317382      | final: 0.32634173296600066
+
+############################################################################  
+Descriptor:  SUPERPOINT
+
+    OVERALL HOMOGRAPHY ESTIMATION RESULTS
+    =====================================
+    No of image pairs           580
+    Out of which failures       22
+    Average homography error    88.22219993896678
+    ...
+    
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of image pairs           295
+        Out of which failures       22
+        Average homography error    165.01399962587234
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of image pairs           285
+        Out of which failures       0
+        Average homography error    14.663739186246717
+
+    
+     
+
+
+******************************************************************************
+******************************************************************************
+
+=================  D2NET  =================== [TIME FOR EXTRACTION: 5.8828 min]
+
+Namespace(distance='euclidean', features='d2net', threshold=1.0)
+    
+    OVERALL COVERAGE RESULTS
+    ========================
+    No of images        696
+    No of keypoints     6288.801724137931
+    Coverage            0.3071377103195713
+    ...
+    
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of images        354
+        No of keypoints     7708.186440677966
+        Coverage            0.30826655336578784
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of images        342
+        No of keypoints     4819.6140350877195
+        Coverage            0.3059692587454173
+
+==============================================================================
+    
+    OVERALL KEYPOINT MATCHING RESULTS
+    =================================
+    Image Pairs                 580
+    Unique Match Ratio          0.0884633724202015
+    Spurious KP Ratio Qry       0.9264820954242327
+    Spurious KP Ratio Trg       0.9130697532621884
+    Multiple Match Ratio        0.0003430932985447475
+    Repeatability               0.07688918866939036         | final: 0.07329923196817485
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        Image Pairs                 295
+        Unique Match Ratio          0.07475791036413379
+        Spurious KP Ratio Qry       0.9522714458483635
+        Spurious KP Ratio Trg       0.9253446726199623
+        Multiple Match Ratio        0.0005435721636750431
+        Repeatability               0.05482974701630342     | final: 0.047776992841701366
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        Image Pairs                 285
+        Unique Match Ratio          0.10264972788174524
+        Spurious KP Ratio Qry       0.899787855511536
+        Spurious KP Ratio Trg       0.9003641349795803
+        Multiple Match Ratio        0.00013558008726952933
+        Repeatability               0.09972264581907683     | final: 0.09971698825698075
+
+##############################################################################  
+Descriptor: D2NET
+
+Descriptor:  d2net
+    
+    OVERALL HOMOGRAPHY ESTIMATION RESULTS
+    =====================================
+    No of image pairs           580
+    Out of which failures       99
+    Average homography error    369.4832900812022
+    ...
+ 
+        Sequences with Viewpoint Changes
+        -------------------------------
+        No of image pairs           295
+        Out of which failures       78
+        Average homography error    740.3078290656074
+    
+        Sequences with Illumination Changes
+        -----------------------------------
+        No of image pairs           285
+        Out of which failures       21
+        Average homography error    64.67675614326299

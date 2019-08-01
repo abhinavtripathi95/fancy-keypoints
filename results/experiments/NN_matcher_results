@@ -1,0 +1,115 @@
+==================================================================================================
+atripath@photolab84:~/Downloads/fancy-keypoints$ more results/experiments/orb_best_match.txt 
+orb
+        OVERALL HOMOGRAPHY ESTIMATION RESULTS
+        =====================================
+        No of image pairs           580
+        Out of which failures       0
+        Average homography error    284.50446569056464
+        ...
+         
+            Sequences with Viewpoint Changes
+            -------------------------------
+            No of image pairs           295
+            Out of which failures       0
+            Average homography error    274.3209359127568
+         
+            Sequences with Illumination Changes
+            -----------------------------------
+            No of image pairs           285
+            Out of which failures       0
+            Average homography error    295.0453123026816
+
+
+==================================================================================================        
+atripath@photolab84:~/Downloads/fancy-keypoints$ more results/experiments/sift_best_match.txt 
+sift
+        OVERALL HOMOGRAPHY ESTIMATION RESULTS
+        =====================================
+        No of image pairs           580
+        Out of which failures       0
+        Average homography error    144.96440719330982
+        ...
+         
+            Sequences with Viewpoint Changes
+            -------------------------------
+            No of image pairs           295
+            Out of which failures       0
+            Average homography error    171.28203849429374
+         
+            Sequences with Illumination Changes
+            -----------------------------------
+            No of image pairs           285
+            Out of which failures       0
+            Average homography error    117.72335023264226
+
+        
+==================================================================================================
+atripath@photolab84:~/Downloads/fancy-keypoints$ more results/experiments/lift_best_match.txt 
+lift
+        OVERALL HOMOGRAPHY ESTIMATION RESULTS
+        =====================================
+        No of image pairs           580
+        Out of which failures       0
+        Average homography error    81.9643857000553
+        ...
+         
+            Sequences with Viewpoint Changes
+            -------------------------------
+            No of image pairs           295
+            Out of which failures       0
+            Average homography error    105.07489281529631
+         
+            Sequences with Illumination Changes
+            -----------------------------------
+            No of image pairs           285
+            Out of which failures       0
+            Average homography error    58.042983598314585
+
+
+==================================================================================================
+atripath@photolab84:~/Downloads/fancy-keypoints$ more results/experiments/superpoint_best_match.txt 
+superpoint
+        OVERALL HOMOGRAPHY ESTIMATION RESULTS
+        =====================================
+        No of image pairs           580
+        Out of which failures       0
+        Average homography error    25.710933179116275
+        ...
+         
+            Sequences with Viewpoint Changes
+            -------------------------------
+            No of image pairs           295
+            Out of which failures       0
+            Average homography error    45.17475859688225
+         
+            Sequences with Illumination Changes
+            -----------------------------------
+            No of image pairs           285
+            Out of which failures       0
+            Average homography error    5.564166518621674
+
+
+==================================================================================================                
+atripath@photolab84:~/Downloads/fancy-keypoints$ more results/experiments/d2net_best_match.txt 
+d2net
+        OVERALL HOMOGRAPHY ESTIMATION RESULTS
+        =====================================
+        No of image pairs           580
+        Out of which failures       0
+        Average homography error    65.36075140441115
+        ...
+         
+            Sequences with Viewpoint Changes
+            -------------------------------
+            No of image pairs           295
+            Out of which failures       0
+            Average homography error    124.41809477533002
+         
+            Sequences with Illumination Changes
+            -----------------------------------
+            No of image pairs           285
+            Out of which failures       0
+            Average homography error    4.231220546793365
+
+        
